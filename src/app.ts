@@ -18,14 +18,17 @@ app.use(bodyParser.json());
 app.use(cors());  // Enable CORS for all routes
 
 // Connect to MongoDB
-mongoose.connect(process.env.db || "")
-    .then(() => console.log("Connected to MongoDB"))
-    .catch(err => console.log("DB Connection Error:", err));
+mongoose.connect(process.env.db || "", {
+    autoIndex: true,
+    serverSelectionTimeoutMS: 10000,
+})
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.log("DB Connection Error:", err));
 
 // Map routes
 app.use("/api/v1/teams", teamRoutes);
 
-// Swagger setup (optional but required for full marks)
+// Swagger setup
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -35,7 +38,7 @@ const swaggerOptions = {
       description: "API for managing sports teams",
     },
   },
-  apis: ["./src/controllers/*.ts"],  // JSDoc comments in controllers
+  apis: ["./dist/controllers/*.js"],
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
