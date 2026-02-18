@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTeam = exports.updateTeam = exports.createTeams = exports.getTeams = void 0;
+exports.deleteTeam = exports.updateTeam = exports.createTeams = exports.getTeamById = exports.getTeams = void 0;
 const team_1 = __importDefault(require("../models/team"));
 /**
  * GET all teams
@@ -18,6 +18,21 @@ const getTeams = async (req, res) => {
 };
 exports.getTeams = getTeams;
 /**
+ * GET by team ID
+ */
+const getTeamById = async (req, res) => {
+    try {
+        const team = await team_1.default.findById(req.params.id);
+        if (!team)
+            return res.status(404).json({ error: "Team Not Found" });
+        return res.status(200).json(team);
+    }
+    catch (error) {
+        return res.status(400).json({ error });
+    }
+};
+exports.getTeamById = getTeamById;
+/**
  * POST create team
  */
 const createTeams = async (req, res) => {
@@ -25,8 +40,8 @@ const createTeams = async (req, res) => {
         return res.status(400).json({ error: "Bad Request: Incomplete Data" });
     }
     try {
-        await team_1.default.create(req.body);
-        return res.status(201).json();
+        const createdTeam = await team_1.default.create(req.body);
+        return res.status(201).json(createdTeam);
     }
     catch (error) {
         return res.status(400).json({ error });
@@ -45,7 +60,7 @@ const updateTeam = async (req, res) => {
         team.set(req.body);
         await team.validate();
         await team.save();
-        return res.status(204).json();
+        return res.status(200).json(team);
     }
     catch (error) {
         return res.status(400).json({ error });

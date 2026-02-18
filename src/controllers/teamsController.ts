@@ -1,4 +1,4 @@
-import express, { Request, Response } from "Express";
+import express, { Request, Response } from "express";
 import Team from "../models/team";
 
 /**
@@ -15,6 +15,19 @@ export const getTeams = async (req: Request, res: Response) => {
 };
 
 /**
+ * GET by team ID
+ */
+export const getTeamById = async (req: Request, res: Response) => {
+    try {
+        const team = await Team.findById(req.params.id);
+        if (!team) return res.status(404).json({ error: "Team Not Found" });
+        return res.status(200).json(team);
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
+};
+
+/**
  * POST create team
  */
 export const createTeams = async (req: Request, res: Response) => {
@@ -23,8 +36,8 @@ export const createTeams = async (req: Request, res: Response) => {
     }
 
     try {
-        await Team.create(req.body);
-        return res.status(201).json();
+        const createdTeam = await Team.create(req.body);
+        return res.status(201).json(createdTeam);
     }
     catch (error) {
         return res.status(400).json({ error });
@@ -45,7 +58,7 @@ export const updateTeam = async (req: Request, res: Response) => {
         await team.validate();
         await team.save();
 
-        return res.status(204).json();
+        return res.status(200).json(team);
     }
     catch (error) {
         return res.status(400).json({ error });
