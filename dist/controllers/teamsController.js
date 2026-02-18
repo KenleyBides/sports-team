@@ -6,7 +6,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTeam = exports.updateTeam = exports.createTeams = exports.getTeamById = exports.getTeams = void 0;
 const team_1 = __importDefault(require("../models/team"));
 /**
- * GET all teams
+ * @swagger
+ * tags:
+ *   - name: Team
+ *     description: Sports Teams API
+ */
+/**
+ * @swagger
+ * /api/v1/teams:
+ *   get:
+ *     summary: Retrieve a list of all teams
+ *     tags: [Team]
+ *     parameters:
+ *       - name: name
+ *         in: query
+ *         description: Filter by team name
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: city
+ *         in: query
+ *         description: Filter by city
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of teams
+ *       404:
+ *         description: No teams found
  */
 const getTeams = async (req, res) => {
     const filter = req.query;
@@ -18,7 +46,23 @@ const getTeams = async (req, res) => {
 };
 exports.getTeams = getTeams;
 /**
- * GET by team ID
+ * @swagger
+ * /api/v1/teams/{id}:
+ *   get:
+ *     summary: Retrieve a single team by ID
+ *     tags: [Team]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Team ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Team found
+ *       404:
+ *         description: Team not found
  */
 const getTeamById = async (req, res) => {
     try {
@@ -33,7 +77,41 @@ const getTeamById = async (req, res) => {
 };
 exports.getTeamById = getTeamById;
 /**
- * POST create team
+ * @swagger
+ * /api/v1/teams:
+ *   post:
+ *     summary: Create a new team
+ *     tags: [Team]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - city
+ *               - foundedYear
+ *               - coach
+ *             properties:
+ *               name:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               foundedYear:
+ *                 type: number
+ *               coach:
+ *                 type: object
+ *                 properties:
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: string
+ *     responses:
+ *       201:
+ *         description: Team created successfully
+ *       400:
+ *         description: Invalid request / incomplete data
  */
 const createTeams = async (req, res) => {
     if (!req.body) {
@@ -49,7 +127,45 @@ const createTeams = async (req, res) => {
 };
 exports.createTeams = createTeams;
 /**
- * PUT update team
+ * @swagger
+ * /api/v1/teams/{id}:
+ *   put:
+ *     summary: Update an existing team
+ *     tags: [Team]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Team ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               foundedYear:
+ *                 type: number
+ *               coach:
+ *                 type: object
+ *                 properties:
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: string
+ *     responses:
+ *       200:
+ *         description: Team updated successfully
+ *       400:
+ *         description: Invalid request / validation error
+ *       404:
+ *         description: Team not found
  */
 const updateTeam = async (req, res) => {
     const team = await team_1.default.findById(req.params.id);
@@ -68,7 +184,25 @@ const updateTeam = async (req, res) => {
 };
 exports.updateTeam = updateTeam;
 /**
- * DELETE team
+ * @swagger
+ * /api/v1/teams/{id}:
+ *   delete:
+ *     summary: Delete a team by ID
+ *     tags: [Team]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Team ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Team deleted successfully
+ *       404:
+ *         description: Team not found
+ *       400:
+ *         description: Delete failed
  */
 const deleteTeam = async (req, res) => {
     try {
