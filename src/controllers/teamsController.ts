@@ -92,17 +92,25 @@ export const getTeamById = async (req: Request, res: Response) => {
  *             properties:
  *               name:
  *                 type: string
+ *                 example: Raptors
  *               city:
  *                 type: string
+ *                 example: Toronto
  *               foundedYear:
  *                 type: number
+ *                 example: 1995
  *               coach:
  *                 type: object
+ *                 required:
+ *                   - firstName
+ *                   - lastName
  *                 properties:
  *                   firstName:
  *                     type: string
+ *                     example: Darko
  *                   lastName:
  *                     type: string
+ *                     example: Rajakovic
  *     responses:
  *       201:
  *         description: Team created successfully
@@ -110,10 +118,6 @@ export const getTeamById = async (req: Request, res: Response) => {
  *         description: Invalid request / incomplete data
  */
 export const createTeams = async (req: Request, res: Response) => {
-    if (!req.body) {
-        return res.status(400).json({error: "Bad Request: Incomplete Data" });
-    }
-
     try {
         const createdTeam = await Team.create(req.body);
         return res.status(201).json(createdTeam);
@@ -145,17 +149,25 @@ export const createTeams = async (req: Request, res: Response) => {
  *             properties:
  *               name:
  *                 type: string
+ *                 example: Raptors
  *               city:
  *                 type: string
+ *                 example: Toronto
  *               foundedYear:
  *                 type: number
+ *                 example: 1995
  *               coach:
  *                 type: object
+ *                 required:
+ *                   - firstName
+ *                   - lastName
  *                 properties:
  *                   firstName:
  *                     type: string
+ *                     example: Darko
  *                   lastName:
  *                     type: string
+ *                     example: Rajakovic
  *     responses:
  *       200:
  *         description: Team updated successfully
