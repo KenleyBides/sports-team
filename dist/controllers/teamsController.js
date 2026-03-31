@@ -96,17 +96,25 @@ exports.getTeamById = getTeamById;
  *             properties:
  *               name:
  *                 type: string
+ *                 example: Raptors
  *               city:
  *                 type: string
+ *                 example: Toronto
  *               foundedYear:
  *                 type: number
+ *                 example: 1995
  *               coach:
  *                 type: object
+ *                 required:
+ *                   - firstName
+ *                   - lastName
  *                 properties:
  *                   firstName:
  *                     type: string
+ *                     example: Darko
  *                   lastName:
  *                     type: string
+ *                     example: Rajakovic
  *     responses:
  *       201:
  *         description: Team created successfully
@@ -114,9 +122,6 @@ exports.getTeamById = getTeamById;
  *         description: Invalid request / incomplete data
  */
 const createTeams = async (req, res) => {
-    if (!req.body) {
-        return res.status(400).json({ error: "Bad Request: Incomplete Data" });
-    }
     try {
         const createdTeam = await team_1.default.create(req.body);
         return res.status(201).json(createdTeam);
@@ -148,17 +153,25 @@ exports.createTeams = createTeams;
  *             properties:
  *               name:
  *                 type: string
+ *                 example: Raptors
  *               city:
  *                 type: string
+ *                 example: Toronto
  *               foundedYear:
  *                 type: number
+ *                 example: 1995
  *               coach:
  *                 type: object
+ *                 required:
+ *                   - firstName
+ *                   - lastName
  *                 properties:
  *                   firstName:
  *                     type: string
+ *                     example: Darko
  *                   lastName:
  *                     type: string
+ *                     example: Rajakovic
  *     responses:
  *       200:
  *         description: Team updated successfully
